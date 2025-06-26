@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,12 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'full_name' => 'required|string|max:255|regex:/^[\p{L}\s]+$/u',
-            'date_of_birth' => 'required|date',
-            'phone' => 'required|string',
-            'email' => 'required|string|unique:users,email',
-            'login' => 'required|string|unique:users,login',
-            'password' => 'required|string|min:6'
+            'full_name' => 'sometimes|required|string|max:255|regex:/^[\p{L}\s]+$/u',
+            'date_of_birth' => 'sometimes|required|date',
+            'phone' => 'sometimes|required|string',
+            'email' => 'sometimes|required|string|unique:users,email' . $this->route('id'),
+            'login' => 'sometimes|required|string|unique:users,login' . $this->route('id'),
+            'password' => 'sometimes|required|string|min:6'
         ];
     }
 

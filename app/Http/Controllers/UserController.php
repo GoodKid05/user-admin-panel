@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -46,6 +47,24 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function update(UpdateUserRequest $request, $id) 
+    {
+        try {
+            $user = User::findOrFail($id);
+            $data = $request->validated();
+            $user->update($data);
+            return response()->json([
+                'message' => 'Пользователь успешно обновлен',
+                'user' => $user
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Пользователь с таким ID не найден',
+                'errors' => $e->getMessage()
+            ], 404);
+        }
+    }
+
     public function destroy(Request $request, $id) 
     {
         try {
@@ -58,6 +77,7 @@ class UserController extends Controller
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'Пользователь с таким ID не найден',
+                'errors' => $e->getMessage()
             ], 404);
         }
     }
