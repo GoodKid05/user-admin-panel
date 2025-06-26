@@ -4,7 +4,7 @@ CRUD панель на Laravel
 
 ---
 
-##Реализованный функционал:
+## Реализованный функционал:
 - Просмотр карточки пользователя с полями:  
   - ФИО  
   - Дата рождения  
@@ -25,19 +25,20 @@ CRUD панель на Laravel
 
 ```bash
 docker-compose up --build -d
-
+```
 2. Скопируйте файл окружения:
 
 ```bash
 cp .env.example .env
-
+```
 3. Установите зависимости:
 
 ```bash
 composer install
 npm install
-
+```
 4.Запустите миграции
 
 ```bash
-php artisan migrate 
+php artisan migrate
+```
