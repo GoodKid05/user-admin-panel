@@ -27,9 +27,9 @@ class UpdateUserRequest extends FormRequest
             'full_name' => 'sometimes|required|string|max:255|regex:/^[\p{L}\s]+$/u',
             'date_of_birth' => 'sometimes|required|date',
             'phone' => 'sometimes|required|string',
-            'email' => 'sometimes|required|string|unique:users,email' . $this->route('id'),
-            'login' => 'sometimes|required|string|unique:users,login' . $this->route('id'),
-            'password' => 'sometimes|required|string|min:6'
+            'email' => 'sometimes|required|string|unique:users,email,' . $this->route('id'),
+            'login' => 'sometimes|required|string|unique:users,login,' . $this->route('id'),
+            'password' => 'sometimes|nullable|string|min:6'
         ];
     }
 
@@ -40,5 +40,12 @@ class UpdateUserRequest extends FormRequest
             'message' => 'Ошибка валидации',
             'errors' => $validator->errors()
         ], 422));
+    }
+
+    public function messages() 
+    {
+        return [
+            'full_name.regex' => 'Full name must contain only letters and spaces',
+        ];
     }
 }

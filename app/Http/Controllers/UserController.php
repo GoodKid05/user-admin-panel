@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class UserController extends Controller
 {
     public function index(Request $request) 
@@ -41,10 +43,18 @@ class UserController extends Controller
             'login' => $data['login'],
             'password' => $data['password']
         ]);
-        return response()->json([
-            'message' => 'Новый пользователь создан',
-            'user' => $user
-        ], 201);
+
+        return redirect()->route('users.index')->with('success', 'Новый пользователь создан');
+
+        // Если надр на JSON
+        // return response()->json([
+        //     'message' => 'Новый пользователь создан',
+        //     'user' => $user
+        // ], 201);
+    }
+
+    public function create() {
+        return view('users.create');
     }
 
     public function update(UpdateUserRequest $request, $id) 
@@ -52,17 +62,31 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $data = $request->validated();
+            
+            if(isEmpty($data['password'])) {
+                unset($data['password']);
+            }
+            
             $user->update($data);
-            return response()->json([
-                'message' => 'Пользователь успешно обновлен',
-                'user' => $user
-            ]);
+
+            return redirect()->route('users.index')->with('success', 'Пользователь изменён');
+
+            // return response()->json([
+            //     'message' => 'Пользователь успешно обновлен',
+            //     'user' => $user
+            // ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'Пользователь с таким ID не найден',
                 'errors' => $e->getMessage()
             ], 404);
         }
+    }
+
+    public function edit($id)  
+    {   
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
     }
 
     public function destroy(Request $request, $id) 
