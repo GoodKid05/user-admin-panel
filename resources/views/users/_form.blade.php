@@ -2,7 +2,7 @@
 	$isEdit = isset($user);
 @endphp
 
-<form action="{{ $isEdit ? route('users.update', $user->id) : route('users.store') }}" method ="POST" class="form-create-user">
+<form action="{{ $isEdit ? route('users.update', $user->id) : route('users.store') }}" method ="POST" class="form-create-user" enctype="multipart/form-data">
 	@csrf
 	@if($isEdit) 
 		@method('PATCH')
@@ -51,6 +51,14 @@
 		<label for="password">{{ $isEdit ? 'Новый пароль' : 'Пароль' }}</label>
 		<input type="password" name="password" id="password" {{ $isEdit ? '' : 'required' }} value="{{ old('password', $isEdit ? $user->passwrod : '') }}">
 		@error('password')
+			<div class="text-danger">{{ $message }}</div>
+		@enderror
+	</div>
+
+	<div class="form-group">
+		<label for="photo">Фото</label>
+		<input type="file" name="photo" id="photo" accept="image/*" value="{{ old('login', $isEdit ? $user->login : '') }}">
+		@error('login')
 			<div class="text-danger">{{ $message }}</div>
 		@enderror
 	</div>

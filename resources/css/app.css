@@ -105,6 +105,12 @@ html, body {
     text-align: center;
 }
 
+.users-table-cell img{
+    width: 250px;
+    margin: 10px 0;
+    height: auto;
+}
+
 .btn-user-edit {
     padding: 0 10px;
 }

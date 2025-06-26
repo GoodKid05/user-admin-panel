@@ -35,18 +35,24 @@ class UserController extends Controller
     public function store(StoreUserRequest $request) {
         $data = $request->validated();
 
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('users', 'public');
+            $data['photo'] = $path;
+        }
+
         $user = User::create([
             'full_name' => $data['full_name'],
             'date_of_birth' => $data['date_of_birth'],
             'phone' => $data['phone'],
             'email' => $data['email'],
             'login' => $data['login'],
-            'password' => $data['password']
+            'password' => $data['password'],
+            'photo' => $data['photo'] ?? null
         ]);
 
         return redirect()->route('users.index')->with('success', 'Новый пользователь создан');
 
-        // Если надр на JSON
+        // Если надо на JSON
         // return response()->json([
         //     'message' => 'Новый пользователь создан',
         //     'user' => $user
@@ -65,6 +71,11 @@ class UserController extends Controller
             
             if(isEmpty($data['password'])) {
                 unset($data['password']);
+            }
+
+            if ($request->hasFile('photo')) {
+                $path = $request->file('photo')->store('users', 'public');
+                $data['photo'] = $path;
             }
             
             $user->update($data);

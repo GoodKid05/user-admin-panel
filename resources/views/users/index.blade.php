@@ -31,6 +31,14 @@
 								@endif
 								@if(in_array($key, ['date_of_birth']))
 									<td class="users-table-cell">{{ \Carbon\Carbon::parse($value)->format('d.m.Y') }}</td>
+								@elseif(in_array($key,['photo']))
+									<td class="users-table-cell"> 
+										@if ($user->photo)
+											<img src="{{ asset('storage/' . $user->photo) }}" alt="Фото"> 
+										@else 
+											Нет фото
+										@endif
+									</td>
 								@else
 									<td class="users-table-cell">{{ $value }}</td>
 								@endif
