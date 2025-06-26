@@ -70,7 +70,8 @@ class UserController extends Controller
             $user->update($data);
 
             return redirect()->route('users.index')->with('success', 'Пользователь изменён');
-
+            
+            // Если надо на JSON
             // return response()->json([
             //     'message' => 'Пользователь успешно обновлен',
             //     'user' => $user
